@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.4022059, g: 0.3477844, b: 0.28113347, a: 1}
+  m_IndirectSpecularColor: {r: 0.40221283, g: 0.34778965, b: 0.28113553, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -17398,6 +17398,7 @@ MonoBehaviour:
   _gameUI: {fileID: 4936429001503952400}
   _maxHp: 100
   _maxMp: 100
+  _needMp: 5
 --- !u!137 &922956988473667001
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 0

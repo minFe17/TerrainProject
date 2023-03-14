@@ -11,6 +11,7 @@ public class CharacterMove : MonoBehaviour
 
     [SerializeField] int _maxHp;
     [SerializeField] int _maxMp;
+    [SerializeField] int _needMp;
     Animator _animator;
 
     int _curHp;
@@ -68,9 +69,9 @@ public class CharacterMove : MonoBehaviour
 
     void Attack()
     {
-        if (Input.GetMouseButtonDown(0) && _curMp > 0)
+        if (Input.GetMouseButtonDown(0) && _curMp / _needMp > 0)
         {
-            _curMp -= 5;
+            _curMp -= _needMp;
             _gameUI.ShowMp(_curMp, _maxMp);
             _sword.enabled = true;
             _animator.SetTrigger("doAttack");
@@ -87,9 +88,9 @@ public class CharacterMove : MonoBehaviour
         if (_curMp >= _maxMp)
             return;
         _mp += Time.deltaTime;
-        if ((int)_mp >= 1)
+        if ((int)_mp >= 2)
         {
-            _curMp += (int)_mp;
+            _curMp++;
             _gameUI.ShowMp(_curMp, _maxMp);
             _mp = 0;
         }
@@ -97,8 +98,10 @@ public class CharacterMove : MonoBehaviour
 
     void Defend()
     {
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(1) && _curMp / _needMp > 0)
         {
+            _curMp -= _needMp;
+            _gameUI.ShowMp(_curMp, _maxMp);
             _animator.SetTrigger("doHit");
         }
     }
