@@ -7,11 +7,17 @@ public class CharacterMove : MonoBehaviour
     [SerializeField] Collider _sword;
     [SerializeField] GameObject _gameOverUI;
     [SerializeField] Inventory _inven;
+    [SerializeField] GameUI _gameUI;
 
+    [SerializeField] int _maxHp;
+    [SerializeField] int _maxMp;
     Animator _animator;
 
-    int _hp = 100;
+    int _curHp;
+    int _curMp;
     int _coin = 0;
+
+    float _mp;
     bool _canHitted = true;
 
     void Awake()
@@ -21,13 +27,17 @@ public class CharacterMove : MonoBehaviour
 
     void Start()
     {
-
+        _curHp = _maxHp;
+        _curMp = _maxMp;
+        _gameUI.ShowHp(_curHp, _maxHp);
+        _gameUI.ShowMp(_curHp, _maxHp);
     }
 
     void Update()
     {
         Move();
         Attack();
+        ChargeMp();
         Defend();
         Jump();
     }
@@ -58,8 +68,10 @@ public class CharacterMove : MonoBehaviour
 
     void Attack()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && _curMp > 0)
         {
+            _curMp -= 5;
+            _gameUI.ShowMp(_curMp, _maxMp);
             _sword.enabled = true;
             _animator.SetTrigger("doAttack");
         }
@@ -68,6 +80,19 @@ public class CharacterMove : MonoBehaviour
     void EndAttack()
     {
         _sword.enabled = false;
+    }
+
+    void ChargeMp()
+    {
+        if (_curMp >= _maxMp)
+            return;
+        _mp += Time.deltaTime;
+        if ((int)_mp >= 1)
+        {
+            _curMp += (int)_mp;
+            _gameUI.ShowMp(_curMp, _maxMp);
+            _mp = 0;
+        }
     }
 
     void Defend()
@@ -102,8 +127,9 @@ public class CharacterMove : MonoBehaviour
     {
         if (!_canHitted)
             return;
-        _hp--;
-        if (_hp <= 0)
+        _curHp--;
+        _gameUI.ShowHp(_curHp, _maxHp);
+        if (_curHp <= 0)
         {
             _animator.SetTrigger("doDie");
         }
